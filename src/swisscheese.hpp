@@ -32,11 +32,11 @@ class Disk {
     }
 
     inline bool inside_proper(const Self &other, distfun dist) const {
-        return (dist(this->centre(), other.centre()) < other.radius());
+        return (dist(this->centre(), other.centre()) < (other.radius() - this->_radius));
     }
 
     inline bool inside(const Self &other, distfun dist) const {
-        return (dist(this->centre(), other.centre()) <= other.radius());
+        return (dist(this->centre(), other.centre()) <= (other.radius() - this->_radius));
     }
 
     inline bool contains_proper(const Self &other, distfun dist) const {
@@ -45,6 +45,11 @@ class Disk {
 
     inline bool contains(const Self &other, distfun dist) const {
         return other.inside(*this, dist);
+    }
+
+    inline bool operator==(const Self other) const {
+        return (this->_centre == other.centre()
+                && this->_radius == other.radius());
     }
 
     private:
