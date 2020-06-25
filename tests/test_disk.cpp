@@ -4,7 +4,9 @@
 
 #include <math.h>
 
-#include "../src/swisscheese.hpp"
+#include "swisscheese.hpp"
+
+using namespace swisscheese;
 
 double dist(const double a, const double b) {
     return std::fabs(b - a);

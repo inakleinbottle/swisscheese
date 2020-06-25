@@ -1,12 +1,13 @@
 
 #include "catch.hpp"
 
-#include "../src/swisscheese.hpp"
+#include "swisscheese.hpp"
 
+using namespace swisscheese;
 
 TEST_CASE( "Basic property tests", "[swisscheese]") {
 
-    SwissCheese<double, double> sc {0.0, 1.0};
+    SwissCheese<double, double> sc {0.0, 1.0, nullptr, nullptr};
 
     CHECK(sc[0].centre() == 0.0);
     CHECK(sc[0].radius() == 1.0);

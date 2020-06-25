@@ -1,0 +1,7 @@
+{
+    "C_Cpp.default.includePath": [
+        "./include",
+        "/usr/local/include/python3.8",
+    ],
+    "C_Cpp.default.systemIncludePath": []
+}
