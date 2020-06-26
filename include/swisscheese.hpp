@@ -5,9 +5,9 @@
 #include <vector>
 #include <cstddef>
 #include <numeric>
+#include <iostream>
 
 using std::vector;
-
 
 namespace swisscheese {
 
@@ -20,8 +20,8 @@ class Disk {
     typedef Disk<POINT> Self;
     typedef RADIUS radius_t;
 
-    typedef radius_t (*distfun)(const point_t, const point_t);
-    typedef void (*combinefun)(const point_t, const point_t, radius_t coeff);
+    typedef radius_t (*distfun)(const point_t&, const point_t&);
+    typedef void (*combinefun)(point_t&, const point_t&, radius_t);
 
 
     Disk();
@@ -58,18 +58,22 @@ class Disk {
         return other.inside(*this, dist);
     }
 
-    inline bool operator==(const Self other) const {
+    inline bool operator==(const Self &other) const {
         return (this->_centre == other.centre()
                 && this->_radius == other.radius());
     }
-
-    double dist(const Self other) const;
-
 
     private:
     POINT _centre;
     RADIUS _radius;
 };
+
+template<class POINT, typename RADIUS = double>
+std::ostream &operator<<(std::ostream &os, Disk<POINT, RADIUS> &disk) {
+    POINT c = disk.centre();
+    RADIUS r = disk.radius();
+    return os << "Disk(" << c << ", " << r << ")";
+}
 
 
 template <class POINT, typename RADIUS = double> 
@@ -136,6 +140,34 @@ class SwissCheese {
     
     
     };
+
+
+namespace classicalise {
+        
+template<class DISK>
+DISK combine_disks(
+    const DISK &d1, const DISK &d2, 
+    typename DISK::distfun dist, 
+    typename DISK::combinefun combinefunc
+) 
+{
+    typedef typename DISK::point_t Centre_t;
+    Centre_t p1 = d1.centre();
+    Centre_t p2 = d2.centre();
+
+    double distance = dist(p1, p2);
+
+    double r = (distance + d1.radius() + d2.radius()) / 2.0;
+    double coeff = (r - d1.radius()) / distance;
+    
+    // updates p1
+    combinefunc(p1, p2, coeff);
+
+    return DISK {p1, r};
+}
+    
+    
+}
 
 
 } // end swisscheese

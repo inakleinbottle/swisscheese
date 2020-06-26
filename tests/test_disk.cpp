@@ -2,13 +2,13 @@
 
 #include "catch.hpp"
 
-#include <math.h>
+#include <cmath>
 
 #include "swisscheese.hpp"
 
 using namespace swisscheese;
 
-double dist(const double a, const double b) {
+double dist(const double &a, const double &b) {
     return std::fabs(b - a);
 }
 typedef Disk<double, double> disk_t;
